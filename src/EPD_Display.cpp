@@ -77,6 +77,89 @@ void EPD_Display::drawBox(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c
     drawLine(x, y + h - 1, x + w - 1, y + h - 1, color);
 }
 
+void EPD_Display::drawFastVLine(int16_t x, int16_t y, int16_t w, uint16_t color) {
+    for (int16_t i = 0; i < w; i++) {
+        drawPixel(x + i, y, color);
+    }
+}
+
+void EPD_Display::drawFastHLine(int16_t x, int16_t y, int16_t h, uint16_t color) {
+    for (int16_t i = 0; i < h; i++) {
+        drawPixel(x, y + i, color);
+    }
+}
+
+
+void EPD_Display::drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t corner, uint16_t color) {
+    int16_t f = 1 - r;
+    int16_t ddF_x = 1;
+    int16_t ddF_y = -2 * r;
+    int16_t x = 0;
+    int16_t y = r;
+
+    while (x < y) {
+        if (f >= 0) {
+            y--;
+            ddF_y += 2;
+            f += ddF_y;
+        }
+        x++;
+        ddF_x += 2;
+        f += ddF_x;
+
+        if (corner & 0x4) {
+            drawPixel(x0 - y, y0 - x, color); // Bottom-left
+            drawPixel(x0 - x, y0 - y, color);
+        }
+        if (corner & 0x8) {
+            drawPixel(x0 + x, y0 - y, color); // Bottom-right
+            drawPixel(x0 + y, y0 - x, color);
+        }
+        if (corner & 0x2) {
+            drawPixel(x0 + x, y0 + y, color); // Top-right
+            drawPixel(x0 + y, y0 + x, color);
+        }
+        if (corner & 0x1) {
+            drawPixel(x0 - y, y0 + x, color); // Top-left
+            drawPixel(x0 - x, y0 + y, color);
+        }
+    }
+}
+
+
+void EPD_Display::drawRoundedButton(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color) {
+    // 绘制按钮的水平和垂直边
+    drawFastVLine(x + r, y, w - 2 * r, color);
+    drawFastVLine(x + r, y + h - 1, w - 2 * r, color);
+    drawFastHLine(x, y + r, h - 2 * r, color);
+    drawFastHLine(x + w - 1, y + r, h - 2 * r, color);
+
+    // 绘制按钮的四个圆角
+    drawCircleHelper(x + r, y + r, r, 4, color);
+    drawCircleHelper(x + w - r - 1, y + r, r, 8, color);
+    drawCircleHelper(x + w - r - 1, y + h - r - 1, r, 2, color);
+    drawCircleHelper(x + r, y + h - r - 1, r, 1, color);
+}
+
+
+void EPD_Display::displaytest1() {
+    for (int x = 0; x < 151; x += 2) {
+        for (int y = 0; y < 151; y += 2) {
+            drawPixel(x, y);
+        }
+    }
+}
+
+void EPD_Display::displaytest2() {
+    for (int y = 0; y < 151; y++) {
+        for (int x = 0; x < 151; x++) {
+            if ((y % 2 == 0 && x % 2 == 0) || (y % 2 != 0 && x % 2 != 0)) {
+                drawPixel(x, y);
+            }
+        }
+    }
+}
+
 void EPD_Display::epdInit() {
     epdReset();
     sendCommand(0x12);

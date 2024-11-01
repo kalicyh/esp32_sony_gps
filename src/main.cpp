@@ -3,40 +3,33 @@
 
 EPD_Display display(EPD_WIDTH, EPD_HEIGHT);
 
-// void screenTest() {
-//     display.clearScreen();
-//     display.drawLine(10, 10, 140, 10);
-//     display.drawLine(10, 10, 10, 140);
-//     display.drawLine(10, 140, 140, 140);
-//     display.drawLine(140, 10, 140, 140);
-//     display.UpdateAndclearDisplay();
-//     delay(1000);
+void screenTest() {
+    display.clearScreen();
+    // display.drawLine(10, 10, 140, 10);
+    // display.drawCircleHelper(76,76,10,1);
+    // display.drawCircleHelper(76,76,15,2);
+    // display.drawCircleHelper(76,76,20,4);
+    // display.drawCircleHelper(76,76,25,8);
+    // display.drawLine(10, 10, 10, 140);
+    // display.drawLine(10, 140, 140, 140);
+    // display.drawLine(140, 10, 140, 140);
+    display.drawRoundedButton(16,40,50,80,10);
+    display.drawRoundedButton(86,40,50,80,10);
+    // delay(1000);
 
-//     display.drawBox(20, 20, 100, 100);
-//     display.UpdateAndclearDisplay();
-//     delay(1000);
+    // display.drawBox(20, 20, 100, 100);
+    // display.drawFastHLine(10,15,10);
+    // display.drawFastHLine(12,15,15);
+    // display.drawFastHLine(140,15,10);
+    // display.drawFastVLine(140,15,10);
+    // display.UpdateAndclearDisplay();
 
-//     for (int x = 0; x < 151; x += 2) {
-//         for (int y = 0; y < 151; y += 2) {
-//             display.drawPixel(x, y);
-//         }
-//     }
-//     display.UpdateAndclearDisplay();
-//     delay(1000);
-
-//     for (int y = 0; y < 151; y++) {
-//         for (int x = 0; x < 151; x++) {
-//             if ((y % 2 == 0 && x % 2 == 0) || (y % 2 != 0 && x % 2 != 0)) {
-//                 display.drawPixel(x, y);
-//             }
-//         }
-//     }
-//     display.updateDisplay();
-// }
+    display.updateDisplay();
+}
 
 void setup() {
     display.begin();
-    // screenTest();
+    screenTest();
 }
 
 void loop() {
